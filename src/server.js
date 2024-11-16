@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino-pretty';
+import pino from 'pino';
 import { getAllContacts, getContactById } from './db/services/contacts.js';
 import 'dotenv/config';
 
-const logger = pino();
 const app = express();
+const logger = pino();
 
 app.use(cors());
 
 app.use((req, res, next) => {
-  logger.info(`Request Method: ${req.method}, Request URL: ${req.url}`);
+  logger.info(`${req.method},${req.url}`);
   next();
 });
 
