@@ -2,18 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-pretty';
 import { getAllContacts, getContactById } from './db/services/contacts.js';
+import 'dotenv/config';
 
+const logger = pino();
 const app = express();
 
-app.use(express.json());
 app.use(cors());
-app.use(
-  pino({
-    transport: {
-      target: 'pino-pretty',
-    },
-  }),
-);
+
+app.use((req, res, next) => {
+  logger.info(`Request Method: ${req.method}, Request URL: ${req.url}`);
+  next();
+});
 
 app.get('/contacts', async (req, res) => {
   try {
