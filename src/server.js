@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino';
-import { getAllContacts, getContactById } from './db/services/contacts.js';
+
 import 'dotenv/config';
+import { getAllContacts, getContactById } from './services/contacts.js';
 
 const app = express();
 const logger = pino();
