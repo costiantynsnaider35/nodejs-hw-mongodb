@@ -5,9 +5,12 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import { Contact } from '../db/models/contact.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
 export const getAllContacts = async (req, res, next) => {
   try {
+    const { page, perPage } = parsePaginationParams(req.query);
+
     const contacts = await Contact.find();
     res.status(200).send({
       status: 200,
