@@ -1,17 +1,20 @@
 import { Contact } from '../db/models/contact.js';
 
 export const createNewContact = async (data) => {
-  return Contact.create(data);
+  const contact = new Contact(data);
+  return await contact.save();
 };
 
-export const updateContact = async (contactId, updateData) => {
-  const updateContact = await Contact.findByIdAndUpdate(contactId, updateData, {
-    new: true,
-  });
-  return updateContact;
+export const updateContact = async (contactId, updateData, userId) => {
+  const contact = await Contact.findOneAndUpdate(
+    { _id: contactId, userId },
+    updateData,
+    { new: true },
+  );
+  return contact;
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await Contact.findByIdAndDelete(contactId);
+export const deleteContact = async (contactId, userId) => {
+  const contact = await Contact.findOneAndDelete({ _id: contactId, userId });
   return contact;
 };
