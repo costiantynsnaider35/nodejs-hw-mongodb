@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
-import { User } from '../models/User.js';
 import createHttpError from 'http-errors';
-import Session from '../models/Session.js';
 import jwt from 'jsonwebtoken';
+import User from '../db/models/user.model.js';
+import Session from '../db/models/session.model.js';
 
 export const createUser = async ({ name, email, password }) => {
-  const existingUser = await User.findOne({ email });
+  const existingUser = await User.findOne({ email: email });
   if (existingUser) {
     throw new Error('Email in use');
   }
