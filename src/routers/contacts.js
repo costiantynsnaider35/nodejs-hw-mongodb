@@ -15,23 +15,28 @@ import { authenticate } from '../middlewares/authenticate.js';
 const router = express.Router();
 const jsonParser = express.json();
 
-router.use(authenticate);
-
-router.get('/', ctrlWrapper(getAllContacts));
-router.get('/:id', isValidId, ctrlWrapper(getContactById));
+router.get('/', authenticate, ctrlWrapper(getAllContacts));
+router.get('/:id', authenticate, isValidId, ctrlWrapper(getContactById));
 router.post(
   '/',
   jsonParser,
+  authenticate,
   validateBody(contactSchema),
   ctrlWrapper(createContactController),
 );
 router.patch(
   '/:id',
   jsonParser,
+  authenticate,
   isValidId,
   validateBody(updateContactSchema),
   ctrlWrapper(updateContactController),
 );
-router.delete('/:id', isValidId, ctrlWrapper(deleteContactController));
+router.delete(
+  '/:id',
+  authenticate,
+  isValidId,
+  ctrlWrapper(deleteContactController),
+);
 
 export default router;

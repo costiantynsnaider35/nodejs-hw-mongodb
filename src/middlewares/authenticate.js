@@ -1,20 +1,27 @@
 import jwt from 'jsonwebtoken';
-import createHttpError from 'http-errors';
+import User from '../db/models/user.model.js';
 
 export const authenticate = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+  const { authorization = '' } = req.headers;
+  const [bearer, token] = authorization.split(' ');
 
-    if (!token) {
-      return next(createHttpError(401, 'No access token provided'));
+  if (bearer !== 'Bearer' || !token) {
+    return res.status(401).json({ message: 'Not authorized' });
+  }
+
+  try {
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(id);
+
+    if (!user || !user.token) {
+      return res.status(401).json({ message: 'Not authorized' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-
-    req.user = decoded;
-
+    req.user = user;
     next();
   } catch {
-    next(createHttpError(401, 'Access token expired'));
+    res.status(401).json({ message: 'Not authorized' });
   }
 };
+
+export default authenticate;

@@ -18,15 +18,14 @@ export const registerUser = async (req, res, next) => {
       status: 'success',
       message: 'Successfully registered a user!',
       data: {
-        id: user.id,
+        id: user._id,
         name: user.name,
         email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     });
   } catch (error) {
-    if (error.code === 11000) {
-      return next(createHttpError(409, 'Email in use'));
-    }
     next(error);
   }
 };
@@ -42,7 +41,6 @@ export const loginUser = async (req, res, next) => {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
