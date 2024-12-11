@@ -1,11 +1,16 @@
 import bcrypt from 'bcrypt';
-import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import User from '../db/models/user.model.js';
-import Session from '../db/models/session.model.js';
+import createHttpError from 'http-errors';
+import { User } from '../db/models/user.model.js';
+import { Session } from '../db/models/session.model.js';
 
 export const createUser = async ({ name, email, password }) => {
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw createHttpError(409, 'Email in use');
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
@@ -28,14 +33,10 @@ export const loginUserService = async (email, password) => {
   if (!user) {
     throw createHttpError(401, 'Invalid email or password');
   }
-
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw createHttpError(401, 'Invalid email or password');
   }
-
-  await Session.deleteOne({ userId: user._id });
-
   return user;
 };
 
@@ -43,32 +44,26 @@ export const refreshSessionTokens = async (refreshToken) => {
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
     const userId = decoded.userId;
-
     const user = await User.findById(userId);
     if (!user) {
       throw createHttpError(404, 'User not found');
     }
-
     const session = await Session.findOne({ userId, refreshToken });
     if (!session) {
       throw createHttpError(401, 'Invalid refresh token');
     }
-
     const newAccessToken = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_ACCESS_SECRET,
       { expiresIn: '15m' },
     );
-
     const newRefreshToken = jwt.sign(
       { userId: user._id },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: '30d' },
     );
-
     session.refreshToken = newRefreshToken;
     await session.save();
-
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -80,14 +75,11 @@ export const refreshSessionTokens = async (refreshToken) => {
 
 export const logoutUserSession = async (sessionId, refreshToken) => {
   const session = await Session.findOne({ _id: sessionId });
-
   if (!session) {
-    throw new Error('Session not found');
+    throw createHttpError(404, 'Session not found');
   }
-
   if (session.refreshToken !== refreshToken) {
-    throw new Error('Invalid refresh token');
+    throw createHttpError(401, 'Invalid refresh token');
   }
-
-  await session.remove();
+  await Session.deleteOne({ _id: sessionId });
 };
