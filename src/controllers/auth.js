@@ -112,6 +112,7 @@ export const refreshSession = async (req, res, next) => {
       refreshTokenValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     }).save();
 
+    res.cookie('refreshToken', newRefreshToken, { httpOnly: true });
     res.status(200).json({
       status: 'success',
       message: 'Successfully refreshed a session!',
@@ -135,7 +136,6 @@ export const logout = async (req, res, next) => {
     await logoutUserSession(session._id, refreshToken);
 
     res.clearCookie('refreshToken');
-    res.clearCookie('sessionId');
     res.status(204).send();
   } catch (error) {
     next(error);
