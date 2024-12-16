@@ -1,10 +1,18 @@
-export const validateBody = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body, { abortEarly: false });
-  if (error) {
-    return res.status(400).json({
-      status: 'fail',
-      message: error.details.map((err) => err.message).join(', '),
-    });
-  }
-  next();
+import createHttpError from 'http-errors';
+
+export const validateBody = (schema) => {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(
+        createHttpError(
+          400,
+          error.details.map((err) => err.message).join(', '),
+        ),
+      );
+    } else {
+      next();
+    }
+  };
 };
+export default validateBody;
