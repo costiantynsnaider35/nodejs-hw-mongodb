@@ -1,7 +1,9 @@
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import {
   createUser,
   loginUserService,
@@ -12,6 +14,8 @@ import { loginSchema, registerSchema } from '../validation/auth.js';
 import { Session } from '../db/models/session.model.js';
 import { createAccessToken, createRefreshToken } from '../services/token.js';
 import { User } from '../db/models/user.model.js';
+import { TEMPLATES_DIR } from '../constants/index.js';
+import { sendEmail } from '../services/emailService.js';
 
 export const registerUser = async (req, res, next) => {
   try {
@@ -146,12 +150,6 @@ export const logout = async (req, res, next) => {
   }
 };
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
-});
-
 export const sendResetEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -162,18 +160,32 @@ export const sendResetEmail = async (req, res, next) => {
     if (!user) {
       throw createHttpError(404, 'User not found');
     }
+
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: '5m',
     });
     const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${token}`;
-    const mailOptions = {
+
+    const resetPasswordTemplatePath = path.join(
+      TEMPLATES_DIR,
+      'reset-password-email.html',
+    );
+    const templateSource = (
+      await fs.readFile(resetPasswordTemplatePath)
+    ).toString();
+    const template = handlebars.compile(templateSource);
+    const html = template({
+      name: user.name,
+      link: resetLink,
+    });
+
+    await sendEmail({
       from: process.env.SMTP_FROM,
       to: email,
       subject: 'Reset Password',
-      text: `Please click on the link to reset your password: ${resetLink}`,
-    };
+      html,
+    });
 
-    await transporter.sendMail(mailOptions);
     res.status(200).json({
       status: 200,
       message: 'Reset password email has been successfully sent.',
