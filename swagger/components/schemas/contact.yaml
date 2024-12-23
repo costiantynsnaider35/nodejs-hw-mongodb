@@ -1,0 +1,34 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+  - phone
+  - contactType
+  - isFavourite
+properties:
+  _id:
+    description: Contact's ID
+    type: string
+    example: 60d0fe4f5311236168a109ca
+  name:
+    description: Contact's name
+    type: string
+    example: 'Jane Doe'
+  email:
+    description: Contact's email
+    type: string
+    example: 'jane.doe@example.com'
+  phoneNumber:
+    description: Contact's phone number
+    type: string
+    example: '123-456-7890'
+  contactType:
+    description: Contact's type
+    type: string
+    enum: ['work', 'home', 'personal', 'business']
+    example: 'personal'
+  isFavourite:
+    description: Whether the contact is marked as favourite
+    type: boolean
+    example: true
