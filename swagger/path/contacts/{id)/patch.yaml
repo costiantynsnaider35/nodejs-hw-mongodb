@@ -14,7 +14,7 @@ parameters:
       example: '60d0fe4f5311236168a109ca'
 requestBody:
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         properties:
@@ -39,6 +39,13 @@ requestBody:
             description: 'Is the contact marked as favourite'
             type: boolean
             example: true
+          photo:
+            description: 'Contacts photo'
+            type: string
+            format: binary
+          userId:
+            type: string
+            example: '60d0fe4f5311236168a109ca'
 responses:
   '200':
     $ref: '../../../components/responses/200.yaml'

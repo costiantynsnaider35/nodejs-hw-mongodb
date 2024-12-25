@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:3000"
+      "url": "https://nodejs-hw-mongodb-dgzb.onrender.com"
     }
   ],
   "tags": [
@@ -25,7 +25,7 @@
     }
   ],
   "paths": {
-    "/api/contacts": {
+    "/contacts": {
       "get": {
         "tags": [
           "Contacts"
@@ -74,14 +74,6 @@
               ],
               "example": "asc"
             }
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string",
-              "example": "Jane"
-            }
           }
         ],
         "responses": {
@@ -90,9 +82,6 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
-          },
-          "404": {
-            "$ref": "#/components/responses/404"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -113,7 +102,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "required": [
@@ -150,6 +139,15 @@
                     "description": "Is the contact marked as favourite",
                     "type": "boolean",
                     "example": true
+                  },
+                  "photo": {
+                    "description": "Contacts photo",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "60d0fe4f5311236168a109ca"
                   }
                 }
               }
@@ -163,16 +161,13 @@
           "401": {
             "$ref": "#/components/responses/401"
           },
-          "404": {
-            "$ref": "#/components/responses/404"
-          },
           "500": {
             "$ref": "#/components/responses/500"
           }
         }
       }
     },
-    "/api/contacts/{id}": {
+    "/contacts/{id}": {
       "get": {
         "tags": [
           "Contacts"
@@ -236,7 +231,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -268,6 +263,15 @@
                     "description": "Is the contact marked as favourite",
                     "type": "boolean",
                     "example": true
+                  },
+                  "photo": {
+                    "description": "Contacts photo",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "60d0fe4f5311236168a109ca"
                   }
                 }
               }
@@ -313,8 +317,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
+          "204": {
+            "$ref": "#/components/responses/204"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -328,7 +332,7 @@
         }
       }
     },
-    "/api/auth/register": {
+    "/auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -380,7 +384,7 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -427,7 +431,7 @@
         }
       }
     },
-    "/api/auth/refresh": {
+    "/auth/refresh": {
       "post": {
         "tags": [
           "Auth"
@@ -469,7 +473,7 @@
         }
       }
     },
-    "/api/auth/send-reset-email": {
+    "/auth/send-reset-email": {
       "post": {
         "tags": [
           "Auth"
@@ -511,7 +515,7 @@
         }
       }
     },
-    "/api/auth/reset-password": {
+    "/auth/reset-password": {
       "post": {
         "tags": [
           "Auth"
@@ -561,7 +565,7 @@
         }
       }
     },
-    "/api/auth/logout": {
+    "/auth/logout": {
       "post": {
         "tags": [
           "Auth"
@@ -602,12 +606,7 @@
       "contact": {
         "type": "object",
         "required": [
-          "_id",
-          "name",
-          "email",
-          "phone",
-          "contactType",
-          "isFavourite"
+          "_id"
         ],
         "properties": {
           "_id": {
@@ -634,8 +633,6 @@
             "description": "Contact's type",
             "type": "string",
             "enum": [
-              "work",
-              "home",
               "personal",
               "business"
             ],
@@ -645,6 +642,16 @@
             "description": "Whether the contact is marked as favourite",
             "type": "boolean",
             "example": true
+          },
+          "photo": {
+            "description": "Photo of the contact",
+            "type": "string",
+            "format": "binary"
+          },
+          "userId": {
+            "description": "ID of the user who created the contact",
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
           }
         }
       }
@@ -707,6 +714,9 @@
             }
           }
         }
+      },
+      "204": {
+        "description": "No Content"
       },
       "400": {
         "description": "Bad request",
