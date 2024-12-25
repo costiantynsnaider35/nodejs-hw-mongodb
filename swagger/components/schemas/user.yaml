@@ -1,0 +1,32 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+properties:
+  _id:
+    description: User's ID
+    type: string
+    example: 60d0fe4f5311236168a109cb
+  name:
+    description: User's name
+    type: string
+    example: 'Alice Johnson'
+  email:
+    description: User's email
+    type: string
+    example: 'alice.johnson@example.com'
+  password:
+    description: User's password (hashed)
+    type: string
+    example: '$2b$10$saltsaltsaltsalt$hashedpassword'
+  createdAt:
+    description: The date when the user was created
+    type: string
+    format: date-time
+    example: '2021-06-23T18:25:43.511Z'
+  updatedAt:
+    description: The date when the user was last updated
+    type: string
+    format: date-time
+    example: '2021-06-23T18:25:43.511Z'

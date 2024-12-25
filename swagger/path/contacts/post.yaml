@@ -7,7 +7,7 @@ security:
   - bearerAuth: []
 requestBody:
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         required:
@@ -36,12 +36,18 @@ requestBody:
             description: 'Is the contact marked as favourite'
             type: boolean
             example: true
+          photo:
+            description: 'Contacts photo'
+            type: string
+            format: binary
+          userId:
+            type: string
+            example: '60d0fe4f5311236168a109ca'
+
 responses:
   '201':
     $ref: ../../components/responses/201.yaml
   '401':
     $ref: ../../components/responses/401.yaml
-  '404':
-    $ref: ../../components/responses/404.yaml
   '500':
     $ref: ../../components/responses/500.yaml
