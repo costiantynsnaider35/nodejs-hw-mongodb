@@ -13,7 +13,8 @@ requestBody:
         required:
           - name
           - email
-          - phoneNumber
+          - contactType
+          - userId
         properties:
           name:
             description: "Contact's name"
@@ -40,10 +41,6 @@ requestBody:
             description: 'Contacts photo'
             type: string
             format: binary
-          userId:
-            type: string
-            example: '60d0fe4f5311236168a109ca'
-
 responses:
   '201':
     $ref: ../../components/responses/201.yaml
