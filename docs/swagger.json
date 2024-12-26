@@ -108,7 +108,8 @@
                 "required": [
                   "name",
                   "email",
-                  "phoneNumber"
+                  "contactType",
+                  "userId"
                 ],
                 "properties": {
                   "name": {
@@ -144,10 +145,6 @@
                     "description": "Contacts photo",
                     "type": "string",
                     "format": "binary"
-                  },
-                  "userId": {
-                    "type": "string",
-                    "example": "60d0fe4f5311236168a109ca"
                   }
                 }
               }
@@ -218,22 +215,17 @@
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "Id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "60d0fe4f5311236168a109ca"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "contactType",
+                  "userId"
+                ],
                 "properties": {
                   "name": {
                     "description": "Contact's name",
@@ -268,10 +260,6 @@
                     "description": "Contacts photo",
                     "type": "string",
                     "format": "binary"
-                  },
-                  "userId": {
-                    "type": "string",
-                    "example": "60d0fe4f5311236168a109ca"
                   }
                 }
               }

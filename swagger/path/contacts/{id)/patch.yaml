@@ -5,18 +5,16 @@ operationId: updateContactById
 description: Update a contact by its ID
 security:
   - bearerAuth: []
-parameters:
-  - in: path
-    name: Id
-    required: true
-    schema:
-      type: string
-      example: '60d0fe4f5311236168a109ca'
 requestBody:
   content:
     multipart/form-data:
       schema:
         type: object
+        required:
+          - name
+          - email
+          - contactType
+          - userId
         properties:
           name:
             description: "Contact's name"
@@ -43,9 +41,6 @@ requestBody:
             description: 'Contacts photo'
             type: string
             format: binary
-          userId:
-            type: string
-            example: '60d0fe4f5311236168a109ca'
 responses:
   '200':
     $ref: '../../../components/responses/200.yaml'
