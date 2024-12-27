@@ -5,16 +5,18 @@ operationId: updateContactById
 description: Update a contact by its ID
 security:
   - bearerAuth: []
+  parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 67606dde93cea8ebd7d245ba
 requestBody:
   content:
     multipart/form-data:
       schema:
         type: object
-        required:
-          - name
-          - email
-          - contactType
-          - userId
         properties:
           name:
             description: "Contact's name"
@@ -31,7 +33,7 @@ requestBody:
           contactType:
             description: "Contact's type"
             type: string
-            enum: ['personal', 'business']
+            enum: ['work', 'home', 'personal', 'business']
             example: 'personal'
           isFavourite:
             description: 'Is the contact marked as favourite'
