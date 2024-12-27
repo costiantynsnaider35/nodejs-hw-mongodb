@@ -12,9 +12,8 @@ requestBody:
         type: object
         required:
           - name
-          - email
+          - phoneNumber
           - contactType
-          - userId
         properties:
           name:
             description: "Contact's name"
@@ -31,7 +30,7 @@ requestBody:
           contactType:
             description: "Contact's type"
             type: string
-            enum: ['personal', 'business']
+            enum: ['work', 'home', 'personal', 'business']
             example: 'personal'
           isFavourite:
             description: 'Is the contact marked as favourite'

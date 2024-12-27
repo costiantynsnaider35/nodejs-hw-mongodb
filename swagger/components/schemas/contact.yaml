@@ -1,6 +1,9 @@
 type: object
 required:
-  - _id
+  - name
+  - phoneNumber
+  - contactType
+  - userId
 properties:
   _id:
     description: Contact's ID
@@ -35,3 +38,13 @@ properties:
     description: ID of the user who created the contact
     type: string
     example: 60d0fe4f5311236168a109ca
+  createdAt:
+    description: Timestamp when the contact was created
+    type: string
+    format: date-time
+    example: 2023-01-01T00:00:00Z
+  updatedAt:
+    description: Timestamp when the contact was last updated
+    type: string
+    format: date-time
+    example: 2023-01-01T00:00:00Z
