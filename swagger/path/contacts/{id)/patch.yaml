@@ -5,7 +5,7 @@ operationId: updateContactById
 description: Update a contact by its ID
 security:
   - bearerAuth: []
-  parameters:
+parameters:
   - in: path
     name: id
     required: true
