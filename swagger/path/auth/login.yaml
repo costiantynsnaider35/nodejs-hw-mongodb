@@ -11,13 +11,13 @@ requestBody:
         required:
           - email
           - password
-        properties:
-          email:
-            type: string
-            example: 'charlie.smith@example.com'
-          password:
-            type: string
-            example: 'securepassword'
+      properties:
+        email:
+          type: string
+          example: 'charlie.smith@example.com'
+        password:
+          type: string
+          example: 'securepassword'
 responses:
   '200':
     $ref: '../../components/responses/200.yaml'

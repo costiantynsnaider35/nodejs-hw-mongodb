@@ -10,6 +10,7 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import cloudinary from '../utils/cloudinary.js';
+import fs from 'fs';
 
 export const getAllContacts = async (req, res, next) => {
   try {
@@ -70,6 +71,7 @@ export const createContactController = async (req, res, next) => {
     if (file) {
       const result = await cloudinary.uploader.upload(file.path);
       photoUrl = result.secure_url;
+      fs.unlinkSync(file.path);
     }
     const newContact = await createNewContact({
       ...body,
@@ -98,6 +100,7 @@ export const updateContactController = async (req, res, next) => {
     if (file) {
       const result = await cloudinary.uploader.upload(file.path);
       photoUrl = result.secure_url;
+      fs.unlinkSync(file.path);
     }
     const updatedContact = await updateContact(
       id,
