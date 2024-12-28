@@ -181,7 +181,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "Id",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "string",
@@ -304,7 +304,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "Id",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "string",
@@ -396,16 +396,16 @@
                 "required": [
                   "email",
                   "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "charlie.smith@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "securepassword"
-                  }
+                ]
+              },
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "charlie.smith@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "securepassword"
                 }
               }
             }
@@ -442,12 +442,12 @@
                 "type": "object",
                 "required": [
                   "refreshToken"
-                ],
-                "properties": {
-                  "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.abc123def456ghi789jkl"
-                  }
+                ]
+              },
+              "properties": {
+                "refreshToken": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.abc123def456ghi789jkl"
                 }
               }
             }
@@ -602,6 +602,7 @@
       "contact": {
         "type": "object",
         "required": [
+          "_id",
           "name",
           "phoneNumber",
           "contactType",
