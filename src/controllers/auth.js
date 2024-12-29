@@ -45,7 +45,7 @@ export const registerUser = async (req, res, next) => {
   } catch (error) {
     if (error.status === 409) {
       res.status(409).json({
-        status: 'fail',
+        status: '409',
         message: error.message,
       });
     } else {
