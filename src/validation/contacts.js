@@ -6,6 +6,7 @@ export const contactSchema = Joi.object({
   phoneNumber: Joi.string().min(10).max(15).required(),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal').required(),
+  photo: Joi.string().optional(),
 });
 
 export const updateContactSchema = Joi.object({
